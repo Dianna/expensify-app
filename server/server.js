@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const publicPath = path.join(__dirname, "..", "public");
 // provided by Heroku
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Serve all assets from index.html
 // Middleware: runs for each req
