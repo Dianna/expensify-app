@@ -1,12 +1,19 @@
 import React from "react";
+import { connect } from "react-redux";
+import ExpensesSummary from "./ExpensesSummary";
 import ExpenseList from "./ExpenseList";
 import ExpenseListFilters from "./ExpenseListFilters";
 
-const ExpenseDashboardPage = () => (
+export const ExpenseDashboardPage = props => (
   <div>
+    {!!props.expenses.length && <ExpensesSummary />}
     <ExpenseListFilters />
     <ExpenseList />
   </div>
 );
 
-export default ExpenseDashboardPage;
+const mapStateToProps = state => ({
+  expenses: state.expenses
+});
+
+export default connect(mapStateToProps)(ExpenseDashboardPage);
