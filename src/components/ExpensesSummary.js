@@ -23,7 +23,6 @@ const mapStateToProps = state => {
   return {
     expenses: visibleExpenses
   };
-  // expenses: state.expenses
 };
 
 export default connect(mapStateToProps)(ExpensesSummary);

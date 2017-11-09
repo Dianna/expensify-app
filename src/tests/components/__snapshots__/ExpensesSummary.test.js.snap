@@ -7,8 +7,7 @@ exports[`should correct amount and total for a single expense 1`] = `
     1
      
     expense
-     
-    totalling 
+     totalling 
     $1,095.00
   </p>
 </div>
@@ -21,8 +20,7 @@ exports[`should correct amount and total for multiple expenses 1`] = `
     2
      
     expenses
-     
-    totalling 
+     totalling 
     $1,140.00
   </p>
 </div>
