@@ -4,6 +4,7 @@ import {
   addExpense,
   startAddExpense,
   editExpense,
+  startEditExpense,
   removeExpense,
   startRemoveExpense,
   setExpenses,
@@ -33,6 +34,30 @@ test("should set up removeExpense action object", () => {
   });
 });
 
+test("should remove an expense from firebase", done => {
+  const store = createMockStore({ expenses });
+  const id = expenses[0].id;
+
+  store
+    .dispatch(startRemoveExpense({ id }))
+    .then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: "REMOVE_EXPENSE",
+        id
+      });
+      return database.ref(`expenses/${id}`).once("value");
+    })
+    .then(snapshot => {
+      expect(snapshot.val()).toBe(null);
+      done();
+    })
+    .catch(err => {
+      console.log(err);
+      done();
+    });
+});
+
 test("should set up editExpense action object", () => {
   const action = editExpense("123abc", { note: "New note value" });
   expect(action).toEqual({
@@ -40,6 +65,35 @@ test("should set up editExpense action object", () => {
     id: "123abc",
     updates: { note: "New note value" }
   });
+});
+
+test("should edit expenses from firebase", done => {
+  const store = createMockStore({ expenses: [expenses[2]] });
+  const id = expenses[2].id;
+  const updates = { amount: 5000, note: "2 weeks of purchases" };
+
+  store
+    .dispatch(startEditExpense(id, updates))
+    .then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: "EDIT_EXPENSE",
+        id,
+        updates
+      });
+      return database.ref(`expenses/${id}`).once("value");
+    })
+    .then(snapshot => {
+      expect({ ...snapshot.val(), id: snapshot.key }).toEqual({
+        ...expenses[2],
+        ...updates
+      });
+      done();
+    })
+    .catch(err => {
+      console.error(err);
+      done();
+    });
 });
 
 test("should set up addExpense action object with provided values", () => {
@@ -135,26 +189,6 @@ test("should fetch the expenses from firebase", done => {
     })
     .catch(() => {
       console.log("err:", err);
-      done();
-    });
-});
-
-test("should remove an expense from firebase", done => {
-  const store = createMockStore({ expenses });
-  const id = expenses[0].id;
-
-  store
-    .dispatch(startRemoveExpense({ id }))
-    .then(() => {
-      const actions = store.getActions();
-      return database.ref(`expenses/${id}`).once("value");
-    })
-    .then(snapshot => {
-      expect(snapshot.val()).toBe(null);
-      done();
-    })
-    .catch(err => {
-      console.log(err);
       done();
     });
 });
