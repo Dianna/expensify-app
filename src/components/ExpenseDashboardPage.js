@@ -6,7 +6,7 @@ import ExpenseListFilters from "./ExpenseListFilters";
 
 export const ExpenseDashboardPage = props => (
   <div>
-    {!!props.expenses.length && <ExpensesSummary />}
+    <ExpensesSummary />
     <ExpenseListFilters />
     <ExpenseList />
   </div>

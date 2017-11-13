@@ -1,8 +1,20 @@
-.button__login {
+.button {
   background: $light-blue;
   border: none;
   color: $white;
   font-size: $font-size-large;
   font-weight: 300;
   padding: $s-size;
+  // Make a link look like a button
+  display: inline-block;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.button--link {
+  background: none;
+}
+
+.button--secondary {
+  background: $grey;
 }
